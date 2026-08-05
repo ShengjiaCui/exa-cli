@@ -1,5 +1,7 @@
 # exa-cli
 
+**[English](README.md)** | [中文](README.zh-CN.md)
+
 A thin command-line interface for the [Exa.ai](https://exa.ai) search API.
 
 Designed to be **symmetric to the `tvly` CLI** for Tavily — same conventions
