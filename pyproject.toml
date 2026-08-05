@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "exa-cli"
+version = "0.1.0"
+description = "Thin command-line interface for the Exa.ai search API. Symmetric to the tvly CLI for Tavily."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "opdev" }]
+keywords = ["exa", "search", "ai", "cli"]
+# Zero runtime dependencies — stdlib only (urllib, json, argparse). This is deliberate:
+# keeps the install isolated and avoids pinning a third-party HTTP client.
+dependencies = []
+
+[project.scripts]
+exa = "exa_cli.cli:main"
+
+[project.urls]
+Homepage = "https://exa.ai/docs/reference/search-api-guide"
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/exa_cli"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
