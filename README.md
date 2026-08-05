@@ -4,16 +4,12 @@
 
 A thin command-line interface for the [Exa.ai](https://exa.ai) search API.
 
-Designed to be **symmetric to the `tvly` CLI** for Tavily — same conventions
-(`EXA_API_KEY` from env, `--json` for agents, `-o FILE` to save, stdin via `-`),
-so existing Tavily skills/workflows transfer with minimal changes.
-
 ## Why
 
 Exa has no official CLI (only Python/JS SDKs). This fills that gap so the
-search engine can be used from the terminal and from AI agent skills, exactly
-the way `tvly` is used for Tavily. The two engines then run side-by-side:
-Tavily as the workhorse, Exa for semantic search and cross-verification.
+search engine can be used from the terminal and from AI agent skills.
+Conventions: `EXA_API_KEY` from env, `--json` for structured output,
+`-o FILE` to save, stdin via `-`. Zero runtime dependencies (stdlib only).
 
 ## Install
 
@@ -39,12 +35,12 @@ exa search "test" --json | jq '.results | length'
 
 All four Exa endpoints, mapped to subcommands:
 
-| Command | Endpoint | Purpose | Tavily equivalent |
-|---------|----------|---------|-------------------|
-| `exa search` | `POST /search` | Semantic / keyword web search | `tvly search` |
-| `exa contents` | `POST /contents` | Extract clean content from URLs | `tvly extract` |
-| `exa find-similar` | `POST /findSimilar` | Pages similar to a given URL | *(none — Exa-specific)* |
-| `exa answer` | `POST /answer` | Generated answer with citations | `tvly research` (partial) |
+| Command | Endpoint | Purpose |
+|---------|----------|---------|
+| `exa search` | `POST /search` | Semantic / keyword web search |
+| `exa contents` | `POST /contents` | Extract clean content from URLs |
+| `exa find-similar` | `POST /findSimilar` | Pages similar to a given URL (Exa-specific) |
+| `exa answer` | `POST /answer` | Generated answer with citations |
 
 **Full parameter coverage**: every parameter in Exa's [API reference](https://exa.ai/docs/reference/search-api-guide-for-coding-agents) is exposed — including nested `contents` objects (`text.maxCharacters`, `highlights.query`, `summary.schema`), `subpages`/`subpageTarget`, `maxAgeHours`/`livecrawlTimeout`, `outputSchema` (structured output), `systemPrompt`, `moderation`, `stream`, and more. Run `exa search --help` / `exa contents --help` / `exa find-similar --help` / `exa answer --help` for the complete flag list.
 
@@ -102,7 +98,7 @@ exa search "AI news" -o results.json --json
 
 - **Zero runtime dependencies** — stdlib only (`urllib`, `json`, `argparse`).
   Keeps the `uv tool` install isolated; nothing to pin.
-- **Auth via `EXA_API_KEY` only** — mirrors `tvly` reading `TAVILY_API_KEY`.
+- **Auth via `EXA_API_KEY` only** — reads from the environment.
 - **Thin, not smart** — passes responses through largely uninterpreted. If Exa
   changes its response shape, only the human-renderer needs updating.
 
@@ -118,7 +114,7 @@ If the rotator daemon isn't running, the POST fails silently — the CLI works n
 
 ## Testing
 
-Two test layers (mirrors the tavily-rotator convention):
+Two test layers:
 
 **Unit tests** (pytest, no API calls, ~0.1s) — mock `client.request` and assert the wire-format body is correct (camelCase translation, contents nesting, filter logic, error normalization):
 

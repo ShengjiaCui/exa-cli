@@ -4,11 +4,9 @@
 
 [Exa.ai](https://exa.ai) 搜索 API 的轻量命令行工具。
 
-设计上与 Tavily 的 `tvly` CLI **完全对称**——同样的约定（`EXA_API_KEY` 读环境变量、`--json` 给 agent 用、`-o FILE` 存文件、stdin 用 `-`），让现有的 Tavily skill/工作流几乎无缝迁移。两个引擎并行运行：Tavily 当主力，Exa 做语义搜索和交叉验证。
-
 ## 为什么需要
 
-Exa 没有官方 CLI（只有 Python/JS SDK）。这个工具填补了这个空白，让 Exa 能像 `tvly` 一样从终端和 AI agent skill 中使用。设计目标：零运行时依赖、极薄（只做 HTTP + 参数透传）、和 `tvly` 体验一致。
+Exa 没有官方 CLI（只有 Python/JS SDK）。这个工具填补了这个空白，让 Exa 能从终端和 AI agent skill 中使用。约定：`EXA_API_KEY` 读环境变量、`--json` 结构化输出、`-o FILE` 存文件、stdin 用 `-`。零运行时依赖（仅标准库）。
 
 ## 安装
 
@@ -34,12 +32,12 @@ exa search "test" --json | jq '.results | length'
 
 四个子命令对应 Exa 的四个端点：
 
-| 命令 | 端点 | 用途 | Tavily 对应 |
-|------|------|------|-------------|
-| `exa search` | `POST /search` | 语义 / 关键词搜索 | `tvly search` |
-| `exa contents` | `POST /contents` | 从 URL 提取干净正文 | `tvly extract` |
-| `exa find-similar` | `POST /findSimilar` | 找与某个 URL 相似的页面 | *（无——Exa 独有）* |
-| `exa answer` | `POST /answer` | 带引用的生成答案 | `tvly research`（部分） |
+| 命令 | 端点 | 用途 |
+|------|------|------|
+| `exa search` | `POST /search` | 语义 / 关键词搜索 |
+| `exa contents` | `POST /contents` | 从 URL 提取干净正文 |
+| `exa find-similar` | `POST /findSimilar` | 找与某个 URL 相似的页面（Exa 独有） |
+| `exa answer` | `POST /answer` | 带引用的生成答案 |
 
 ## 示例
 
@@ -85,7 +83,7 @@ Exa [API 文档](https://exa.ai/docs/reference/search-api-guide-for-coding-agent
 
 ## 测试
 
-两层测试（镜像 tavily-rotator 约定）：
+两层测试：
 
 **单元测试**（pytest，不打 API，~0.1s）——mock `client.request`，断言 wire-format body 正确（camelCase 转换、contents 嵌套、过滤逻辑、错误归一化）：
 
