@@ -14,14 +14,14 @@ Conventions: `EXA_API_KEY` from env, `--json` for structured output,
 ## Install
 
 ```bash
-uv tool install ~/Projects/exa-cli
+uv tool install git+https://github.com/ShengjiaCui/exa-cli.git
 ```
 
 Then ensure `EXA_API_KEY` is in your environment:
 
 ```bash
-# one-time, persisted across shells:
-launchctl setenv EXA_API_KEY <your-key>
+# All platforms — add to your shell profile (.bashrc / .zshrc / PowerShell profile):
+export EXA_API_KEY=<your-key>
 ```
 
 Verify:

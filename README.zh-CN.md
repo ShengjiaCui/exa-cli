@@ -17,8 +17,8 @@ uv tool install git+https://github.com/ShengjiaCui/exa-cli.git
 然后确保 `EXA_API_KEY` 在环境中：
 
 ```bash
-# 一次性，持久化到所有 shell：
-launchctl setenv EXA_API_KEY <your-key>
+# 所有平台 — 加到 shell 配置文件（.bashrc / .zshrc / PowerShell profile）：
+export EXA_API_KEY=<your-key>
 ```
 
 验证：

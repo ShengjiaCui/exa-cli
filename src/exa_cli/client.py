@@ -36,8 +36,9 @@ def _api_key() -> str:
     key = os.environ.get("EXA_API_KEY", "").strip()
     if not key:
         raise ExaError(
-            "EXA_API_KEY is not set. Export it or inject via "
-            "`launchctl setenv EXA_API_KEY <key>`. Get one at https://exa.ai/dashboard."
+            "EXA_API_KEY is not set. Export it in your shell "
+            "(export EXA_API_KEY=<key>), or use exa-rotator daemon to manage it. "
+            "Get one at https://exa.ai/dashboard."
         )
     return key
 
